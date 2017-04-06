@@ -38,6 +38,12 @@ def is_dataset_acquired(pkg_dict):
     else:
         return False
 
+def is_dataresource_acquired(resource):
+    user_list =  resource.get('allowed_users', '').split(',')
+    if tk.c.user and tk.c.user in user_list:
+        return True
+    else:
+	return False
 
 def is_owner(pkg_dict):
     if tk.c.userobj is not None:

@@ -73,12 +73,18 @@ class PrivateDatasets(p.SingletonPlugin, tk.DefaultDatasetForm):
         # grab the default schema in our plugin
         schema = super(PrivateDatasets, self).create_package_schema()
         schema.update(self._modify_package_schema())
+	# update resource
+        # Add our custom_resource_text metadata field to the schema
+        schema['resources'].update({'allowed_users' : [ tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')]})
         return schema
 
     def update_package_schema(self):
         # grab the default schema in our plugin
         schema = super(PrivateDatasets, self).update_package_schema()
         schema.update(self._modify_package_schema())
+        # update resource
+        # Add our custom_resource_text metadata field to the schema
+        schema['resources'].update({'allowed_users' : [ tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')]})
         return schema
 
     def show_package_schema(self):
@@ -91,6 +97,9 @@ class PrivateDatasets(p.SingletonPlugin, tk.DefaultDatasetForm):
             constants.SEARCHABLE: [tk.get_converter('convert_from_extras'),
                                    tk.get_validator('ignore_missing')]
         })
+        # update resource
+        # Add our custom_resource_text metadata field to the schema
+        schema['resources'].update({'allowed_users' : [ tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]})
         return schema
 
     def is_fallback(self):
@@ -298,5 +307,6 @@ class PrivateDatasets(p.SingletonPlugin, tk.DefaultDatasetForm):
                 'can_read': helpers.can_read,
                 'show_acquire_url_on_create': helpers.show_acquire_url_on_create,
                 'show_acquire_url_on_edit': helpers.show_acquire_url_on_edit,
-                'acquire_button': helpers.acquire_button
+                'acquire_button': helpers.acquire_button,
+		'is_dataresource_acquired': helpers.is_dataresource_acquired
                 }
